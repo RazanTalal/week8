@@ -1,9 +1,11 @@
+package Homework;
+
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 
 import static org.hamcrest.Matchers.equalTo;
 
-public class hw5 {
+public class Hw5 {
     /*
    Given
        https://reqres.in/api/users/23
@@ -18,7 +20,7 @@ public class hw5 {
    And
        Response body should be empty
 */
-    public static void main(String[] args) {
+    public void HW5(){
 
 //            https://reqres.in/api/users/23
 
