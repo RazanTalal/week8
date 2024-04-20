@@ -2,6 +2,7 @@ package Homework;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import org.testng.annotations.Test;
 
 import static org.hamcrest.Matchers.equalTo;
 
@@ -20,6 +21,7 @@ public class Hw5 {
    And
        Response body should be empty
 */
+    @Test
     public void HW5(){
 
 //            https://reqres.in/api/users/23
@@ -40,6 +42,6 @@ public class Hw5 {
                 .statusCode(404)
                 .statusLine("HTTP/1.1 404 Not Found")
                 .header("Server", "cloudflare")
-                .body(equalTo(""));
+                .body(equalTo("{}"));
     }
 }
