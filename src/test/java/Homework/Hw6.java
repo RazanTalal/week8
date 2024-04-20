@@ -1,8 +1,10 @@
 package Homework;
 
 import io.restassured.RestAssured;
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 import static org.hamcrest.Matchers.equalTo;
 
@@ -33,7 +35,7 @@ public class Hw6 {
 }
       */
     @Test
-    public void assertionMethod() {
+    public void HW6() {
 
 //          https://reqres.in/api/unknown/3
 
@@ -57,6 +59,41 @@ public class Hw6 {
 //            "color": "#BF1932",
 //            "pantone_value": "19-1664"
 //        },
+//        "support": {
+//            "url": "https://reqres.in/#support-heading",
+//            "text": "To keep ReqRes free, contributions towards server costs are appreciated!"
+//        }
+//}
+
+// 1st way: By extracting data outside the body with JSONPath
+        //Convert Response to JsonPath object
+        JsonPath jsonPath = response.jsonPath();
+
+        //Retrieve the desired data by using JsonPath object
+        int id = jsonPath.getInt("data.id");
+        String name = jsonPath.getString("data.name");
+        int year = jsonPath.getInt("data.year");
+        String color = jsonPath.getString("data.color");
+        String pantone_value = jsonPath.getString("data.pantone_value");
+
+        String url = jsonPath.getString("support.url");
+        String text = jsonPath.getString("support.text");
+
+        //1st step: Create SoftAssert object
+        SoftAssert softAssert = new SoftAssert();
+
+        softAssert.assertEquals(id, 3);//If this assertion fails, the subsequent lines will execute as well. Because this is Soft Assertion.
+        softAssert.assertEquals(name, "true red");
+        softAssert.assertEquals(year, 2002);
+        softAssert.assertEquals(color, "#BF1932");
+        softAssert.assertEquals(pantone_value, "19-1664");
+        softAssert.assertEquals(url, "https://reqres.in/#support-heading");
+        softAssert.assertEquals(text, "To keep ReqRes free, contributions towards server costs are appreciated!");
+
+        //3rd step: Use assertAll() method.
+        softAssert.assertAll();//In any failure case execution will stop here in soft assertion
+
+        //2nd way: then() method with hamcrest matchers
         response
                 .then()
                 .body("data.id",equalTo(3))
@@ -65,11 +102,6 @@ public class Hw6 {
                 .body("data.color",equalTo("#BF1932"))
                 .body("data.pantone_value",equalTo("19-1664"))
 
-                //        "support": {
-//            "url": "https://reqres.in/#support-heading",
-//            "text": "To keep ReqRes free, contributions towards server costs are appreciated!"
-//        }
-//}
                 .body("support.url", equalTo("https://reqres.in/#support-heading"))
                 .body("support.text",equalTo("To keep ReqRes free, contributions towards server costs are appreciated!"));
 
